@@ -1,4 +1,4 @@
-package github.tinkzhang.readkeeper.ui.home
+package github.tinkzhang.readkeeper.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -7,15 +7,32 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="github.tinkzhang.readkeeper.ui.home.HomeFragment"
+        android:name="github.tinkzhang.readkeeper.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="github.tinkzhang.readkeeper.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_reading"
+        android:name="github.tinkzhang.readkeeper.reading.ReadingFragment"
+        android:label="@string/title_reading"
+        tools:layout="@layout/fragment_reading" />
+
+    <fragment
+        android:id="@+id/navigation_wish"
+        android:name="github.tinkzhang.readkeeper.wish.WishFragment"
+        android:label="@string/title_wish"
+        tools:layout="@layout/fragment_wish" />
+
+    <fragment
+        android:id="@+id/navigation_archived"
+        android:name="github.tinkzhang.readkeeper.archive.ArchivedFragment"
+        android:label="@string/title_archived"
+        tools:layout="@layout/fragment_archived" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="github.tinkzhang.readkeeper.setting.SettingsFragment"
+        android:label="@string/title_setting" />
 
     <fragment
         android:id="@+id/navigation_notifications"
