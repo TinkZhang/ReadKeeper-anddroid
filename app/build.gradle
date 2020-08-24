@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
     implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
+    implementation 'com.lapism:search:2.2.0@aar'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
