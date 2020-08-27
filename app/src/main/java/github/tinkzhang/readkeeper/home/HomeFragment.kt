@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.lapism.search.internal.SearchLayout
 import com.lapism.search.widget.MaterialSearchView
 import github.tinkzhang.readkeeper.R
@@ -58,6 +60,9 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onQueryTextSubmit(query: CharSequence): Boolean {
+                    val bundle = bundleOf("keyword" to query.toString())
+                    view.findNavController()
+                            .navigate(R.id.action_navigation_home_to_searchResultFragment, bundle)
                     return true
                 }
             })
