@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import github.tinkzhang.readkeeper.R
 
 class SearchResultFragment : Fragment() {
@@ -18,6 +20,7 @@ class SearchResultFragment : Fragment() {
 
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var testTextView: TextView
+    private lateinit var recyclerView: RecyclerView
 
     private  var keyword: String? = null
 
@@ -29,18 +32,21 @@ class SearchResultFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SearchResultViewModel::class.java)
-        // TODO: Use the ViewModel
         keyword = arguments?.getString("keyword")
         keyword?.let { viewModel.searchBook(it) }
 
+        val adapter: SearchBookListAdapter = SearchBookListAdapter()
         viewModel.books.observe(viewLifecycleOwner, Observer {
-            testTextView.text = it.toString()
+            adapter.submitList(it)
         })
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         testTextView = view.findViewById(R.id.test_tv)
+        recyclerView = view.findViewById(R.id.recycler_view)
     }
 
 }
