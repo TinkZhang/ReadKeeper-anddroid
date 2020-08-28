@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import github.tinkzhang.readkeeper.R
 
@@ -18,6 +19,8 @@ class SearchResultFragment : Fragment() {
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var testTextView: TextView
 
+    private  var keyword: String? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.search_result_fragment, container, false)
@@ -27,12 +30,17 @@ class SearchResultFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SearchResultViewModel::class.java)
         // TODO: Use the ViewModel
+        keyword = arguments?.getString("keyword")
+        keyword?.let { viewModel.searchBook(it) }
+
+        viewModel.books.observe(viewLifecycleOwner, Observer {
+            testTextView.text = it.toString()
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         testTextView = view.findViewById(R.id.test_tv)
-        testTextView.text = arguments?.getString("keyword")
     }
 
 }
