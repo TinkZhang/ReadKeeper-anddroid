@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/searchResultFragment"
         android:name="github.tinkzhang.readkeeper.search.SearchResultFragment"
-        android:label="search_result_fragment"
+        android:label="@string/title_search"
         tools:layout="@layout/search_result_fragment" >
         <argument
             android:name="keyword"

@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
                 }
 
                 override fun onQueryTextSubmit(query: CharSequence): Boolean {
+                    materialSearchView.clearFocus()
                     val bundle = bundleOf("keyword" to query.toString())
                     view.findNavController()
                             .navigate(R.id.action_navigation_home_to_searchResultFragment, bundle)
