@@ -27,9 +27,22 @@ class SearchBookListAdapter : ListAdapter<SearchBook, SearchItemViewHolder>(Book
 class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(book: SearchBook) {
         itemView.findViewById<TextView>(R.id.title_textview).text = book.title
+
         Glide.with(itemView).load(book.imageUrl).into(
                 itemView.findViewById<ImageView>(R.id.book_cover_imageview)
         )
+
+        itemView.findViewById<TextView>(R.id.author_textview).text = book.author
+
+        if (book.originalPublicationYear > 0) {
+            itemView.findViewById<TextView>(R.id.publish_time_textview).text =
+                book.originalPublicationYear.toString()
+        }
+
+        if (book.rating > 0) {
+            itemView.findViewById<TextView>(R.id.rating_textview).text =
+                itemView.context.getString(R.string.rate_text, book.rating)
+        }
     }
 }
 
