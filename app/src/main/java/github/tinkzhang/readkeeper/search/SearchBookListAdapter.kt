@@ -1,13 +1,18 @@
 package github.tinkzhang.readkeeper.search
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
 import github.tinkzhang.readkeeper.R
 import github.tinkzhang.readkeeper.search.model.SearchBook
@@ -25,6 +30,7 @@ class SearchBookListAdapter : ListAdapter<SearchBook, SearchItemViewHolder>(Book
 }
 
 class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    @SuppressLint("ShowToast")
     fun bind(book: SearchBook) {
         itemView.findViewById<TextView>(R.id.title_textview).text = book.title
 
@@ -42,6 +48,20 @@ class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (book.rating > 0) {
             itemView.findViewById<TextView>(R.id.rating_textview).text =
                 itemView.context.getString(R.string.rate_text, book.rating)
+        }
+
+        itemView.findViewById<ImageButton>(R.id.add_button).setOnClickListener {
+            MaterialDialog(itemView.context).show {
+                listItemsSingleChoice(R.array.add_destinations) { dialog, index, text ->
+                    val toastText = itemView.context.getString(R.string.add_to, book.title, text)
+                    when(index) {
+                        // TODO: add selected book to corresponding list
+//                        0 -> addedToReading()
+                    }
+                    Toast.makeText(itemView.context, toastText, Toast.LENGTH_LONG).show()
+                }
+                positiveButton(R.string.add)
+            }
         }
     }
 }
