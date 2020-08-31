@@ -1,6 +1,7 @@
 package github.tinkzhang.readkeeper.search
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +16,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
 import github.tinkzhang.readkeeper.R
+import github.tinkzhang.readkeeper.archive.ArchiveBook
+import github.tinkzhang.readkeeper.common.AppDatabase
 import github.tinkzhang.readkeeper.search.model.SearchBook
+import kotlinx.coroutines.Dispatchers
 
-class SearchBookListAdapter : ListAdapter<SearchBook, SearchItemViewHolder>(BookDiffCallback()) {
+class SearchBookListAdapter : ListAdapter<SearchBook, SearchItemViewHolder>(SearchItemViewHolder.BookDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return SearchItemViewHolder(inflater.inflate(R.layout.item_search_book, parent, false))
@@ -56,13 +60,18 @@ class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     val toastText = itemView.context.getString(R.string.add_to, book.title, text)
                     when(index) {
                         // TODO: add selected book to corresponding list
-//                        0 -> addedToReading()
+                        0 -> addedToArchive(itemView.context, ArchiveBook(book))
                     }
                     Toast.makeText(itemView.context, toastText, Toast.LENGTH_LONG).show()
                 }
                 positiveButton(R.string.add)
             }
         }
+    }
+
+    private fun addedToArchive(context: Context, book: ArchiveBook) = viewModelScope.launch(
+        Dispatchers.IO) {
+        AppDatabase.getDatabase(context).archiveBookDao().insertAll(book)
     }
 }
 

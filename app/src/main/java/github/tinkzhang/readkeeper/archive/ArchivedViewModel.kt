@@ -1,7 +1,28 @@
 package github.tinkzhang.readkeeper.archive
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import github.tinkzhang.readkeeper.common.AppDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ArchivedViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class ArchivedViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: ArchiveRepository
+    val books: LiveData<List<ArchiveBook>>
+    var isLoading = MutableLiveData<Boolean>()
+
+    init {
+        val archiveBookDao = AppDatabase.getDatabase(application).archiveBookDao()
+        repository = ArchiveRepository(archiveBookDao)
+        books = repository.allBooks
+    }
+
+    fun insert(book: ArchiveBook) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(book)
+    }
+
 }
