@@ -14,11 +14,13 @@ import kotlinx.coroutines.withContext
 class SearchResultViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     var books = MutableLiveData<List<SearchBook>>()
+    var isLoading = MutableLiveData<Boolean>()
 
 
     fun searchBook(keyword: String){
         viewModelScope.launch {
             try {
+                isLoading.value = true
                 val data = withContext(Dispatchers.IO){
                     GoodreadsService.instance.searchBook(keyword)
                 }
@@ -26,11 +28,13 @@ class SearchResultViewModel : ViewModel() {
                     books.value = data.body()?.search?.results?.map {
                         it.convertToSearchBook()
                     }
+                    isLoading.value = false
                 }
                 Log.d("Tink", data.toString())
             }
             catch (e: Exception) {
                 Log.d("Tink", e.toString())
+                isLoading.value = false
             }
         }
     }

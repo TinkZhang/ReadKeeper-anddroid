@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +19,8 @@ class SearchResultFragment : Fragment() {
     }
 
     private lateinit var viewModel: SearchResultViewModel
-    private lateinit var testTextView: TextView
     private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private  var keyword: String? = null
 
@@ -39,14 +39,20 @@ class SearchResultFragment : Fragment() {
         viewModel.books.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            when(it){
+                true -> progressBar.visibility = View.VISIBLE
+                false -> progressBar.visibility = View.GONE
+            }
+        })
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        testTextView = view.findViewById(R.id.test_tv)
         recyclerView = view.findViewById(R.id.recycler_view)
+        progressBar = view.findViewById(R.id.progressBar)
     }
 
 }
