@@ -19,6 +19,7 @@ class ArchivedViewModel(application: Application) : AndroidViewModel(application
         val archiveBookDao = AppDatabase.getDatabase(application).archiveBookDao()
         repository = ArchiveRepository(archiveBookDao)
         books = repository.allBooks
+        isLoading.value = false
     }
 
     fun insert(book: ArchiveBook) = viewModelScope.launch(Dispatchers.IO) {
