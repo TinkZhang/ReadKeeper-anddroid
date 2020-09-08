@@ -39,8 +39,8 @@ interface ArchiveBookDao {
     fun getAll(): LiveData<List<ArchiveBook>>
 
     @Insert
-    fun insertAll(vararg books: ArchiveBook)
+    suspend fun insertAll(vararg books: ArchiveBook)
 
     @Delete
-    fun delete(book: ArchiveBook)
+    suspend fun delete(book: ArchiveBook)
 }
