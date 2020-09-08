@@ -26,4 +26,8 @@ class ArchivedViewModel(application: Application) : AndroidViewModel(application
         repository.insert(book)
     }
 
+    fun delete(book: ArchiveBook) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(book)
+    }
+
 }

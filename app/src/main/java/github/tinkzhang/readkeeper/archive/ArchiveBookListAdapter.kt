@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import github.tinkzhang.readkeeper.R
-import github.tinkzhang.readkeeper.search.OnItemClickListener
 
-class ArchiveBookListAdapter(val onClickListener: OnItemClickListener) : ListAdapter<ArchiveBook, ArchiveItemViewHolder>(github.tinkzhang.readkeeper.archive.BookDiffCallback())  {
+class ArchiveBookListAdapter(val onClickListener: github.tinkzhang.readkeeper.archive.OnItemClickListener) : ListAdapter<ArchiveBook, ArchiveItemViewHolder>(github.tinkzhang.readkeeper.archive.BookDiffCallback())  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return ArchiveItemViewHolder(inflater.inflate(R.layout.item_archive_book, parent, false), onClickListener)
@@ -25,7 +24,7 @@ class ArchiveBookListAdapter(val onClickListener: OnItemClickListener) : ListAda
 
 }
 
-class ArchiveItemViewHolder(itemView: View, val onClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
+class ArchiveItemViewHolder(itemView: View, val onClickListener: github.tinkzhang.readkeeper.archive.OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
     @SuppressLint("ShowToast")
     fun bind(book: ArchiveBook) {
         itemView.findViewById<TextView>(R.id.title_textview).text = book.title
@@ -57,4 +56,10 @@ class BookDiffCallback : DiffUtil.ItemCallback<ArchiveBook>() {
     override fun areContentsTheSame(oldItem: ArchiveBook, newItem: ArchiveBook): Boolean {
         return oldItem == newItem
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClicked(book: ArchiveBook)
+    fun onItemImageLongClicked(book: ArchiveBook) : Boolean
+    fun onAddButtonClicked(book: ArchiveBook)
 }

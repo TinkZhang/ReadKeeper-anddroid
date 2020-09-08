@@ -1,9 +1,7 @@
 package github.tinkzhang.readkeeper.archive
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,10 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import github.tinkzhang.readkeeper.R
-import github.tinkzhang.readkeeper.search.OnItemClickListener
-import github.tinkzhang.readkeeper.search.model.SearchBook
 
-class ArchivedFragment : Fragment(), OnItemClickListener {
+class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemClickListener {
 
     companion object {
         fun newInstance() = ArchivedFragment()
@@ -53,15 +49,36 @@ class ArchivedFragment : Fragment(), OnItemClickListener {
         progressBar = view.findViewById(R.id.progressBar)
     }
 
-    override fun onItemClicked(book: SearchBook) {
+    override fun onItemClicked(book: ArchiveBook) {
+        activity?.startActionMode(object : ActionMode.Callback {
+            override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                this@ArchivedFragment.activity?.menuInflater?.inflate(R.menu.list_delete_menu, menu)
+                return true
+            }
+
+            override fun onPrepareActionMode(p0: ActionMode?, p1: Menu?): Boolean {
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, menu: MenuItem?): Boolean {
+                when(menu?.itemId) {
+                    R.id.delete_menu -> viewModel.delete(book)
+                }
+                mode?.finish()
+                return true
+            }
+
+            override fun onDestroyActionMode(p0: ActionMode?) {
+            }
+
+        })
+    }
+
+    override fun onItemImageLongClicked(book: ArchiveBook): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun onItemImageLongClicked(book: SearchBook): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onAddButtonClicked(book: SearchBook) {
+    override fun onAddButtonClicked(book: ArchiveBook) {
         TODO("Not yet implemented")
     }
 
