@@ -29,6 +29,14 @@ class ArchiveItemViewHolder(itemView: View, val onClickListener: github.tinkzhan
     fun bind(book: ArchiveBook) {
         itemView.findViewById<TextView>(R.id.title_textview).text = book.title
 
+        itemView.setOnLongClickListener {
+            itemView.isActivated = true
+            onClickListener.onItemLongClicked(book)
+            true
+        }
+
+        itemView.isActivated = false
+
         Glide.with(itemView).load(book.imageUrl).into(
                 itemView.findViewById(R.id.book_cover_imageview)
         )
@@ -59,7 +67,8 @@ class BookDiffCallback : DiffUtil.ItemCallback<ArchiveBook>() {
 }
 
 interface OnItemClickListener {
-    fun onItemClicked(book: ArchiveBook)
+    fun onItemClicked(view: View, book: ArchiveBook)
+    fun onItemLongClicked(book: ArchiveBook)
     fun onItemImageLongClicked(book: ArchiveBook) : Boolean
     fun onAddButtonClicked(book: ArchiveBook)
 }

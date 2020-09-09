@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
 
 class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemClickListener {
@@ -49,14 +50,20 @@ class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemC
         progressBar = view.findViewById(R.id.progressBar)
     }
 
-    override fun onItemClicked(book: ArchiveBook) {
+    override fun onItemClicked(view: View, book: ArchiveBook) {
+        Snackbar.make(view, "Hello", Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onItemLongClicked(book: ArchiveBook) {
         activity?.startActionMode(object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 this@ArchivedFragment.activity?.menuInflater?.inflate(R.menu.list_delete_menu, menu)
+
                 return true
             }
 
-            override fun onPrepareActionMode(p0: ActionMode?, p1: Menu?): Boolean {
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                mode?.title = book.title
                 return false
             }
 
@@ -68,7 +75,8 @@ class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemC
                 return true
             }
 
-            override fun onDestroyActionMode(p0: ActionMode?) {
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                this@ArchivedFragment.recyclerView.adapter?.notifyDataSetChanged()
             }
 
         })
