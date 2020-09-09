@@ -31,7 +31,7 @@ class ArchiveItemViewHolder(itemView: View, val onClickListener: github.tinkzhan
 
         itemView.setOnLongClickListener {
             itemView.isActivated = true
-            onClickListener.onItemLongClicked(book)
+            onClickListener.onItemLongClicked(itemView, book)
             true
         }
 
@@ -68,7 +68,7 @@ class BookDiffCallback : DiffUtil.ItemCallback<ArchiveBook>() {
 
 interface OnItemClickListener {
     fun onItemClicked(view: View, book: ArchiveBook)
-    fun onItemLongClicked(book: ArchiveBook)
+    fun onItemLongClicked(view: View, book: ArchiveBook)
     fun onItemImageLongClicked(book: ArchiveBook) : Boolean
     fun onAddButtonClicked(book: ArchiveBook)
 }

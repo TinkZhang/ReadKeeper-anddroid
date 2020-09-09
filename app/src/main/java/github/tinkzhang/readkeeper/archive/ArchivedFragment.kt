@@ -1,6 +1,8 @@
 package github.tinkzhang.readkeeper.archive
 
 import android.os.Bundle
+import android.text.Html
+import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.view.*
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -54,7 +56,7 @@ class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemC
         Snackbar.make(view, "Hello", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun onItemLongClicked(book: ArchiveBook) {
+    override fun onItemLongClicked(view: View, book: ArchiveBook) {
         activity?.startActionMode(object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
                 this@ArchivedFragment.activity?.menuInflater?.inflate(R.menu.list_delete_menu, menu)
@@ -72,6 +74,10 @@ class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemC
                     R.id.delete_menu -> viewModel.delete(book)
                 }
                 mode?.finish()
+                Snackbar.make(
+                    view,
+                    Html.fromHtml(getString(R.string.snackbar_delete_message, book.title), FROM_HTML_MODE_COMPACT),
+                    Snackbar.LENGTH_LONG).show()
                 return true
             }
 
