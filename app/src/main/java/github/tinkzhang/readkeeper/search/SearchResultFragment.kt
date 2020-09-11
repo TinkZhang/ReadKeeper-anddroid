@@ -4,18 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
 import github.tinkzhang.readkeeper.common.InjectorUtils
 import github.tinkzhang.readkeeper.common.ui.ListFragment
 import github.tinkzhang.readkeeper.search.model.SearchBook
 
-class SearchResultFragment : ListFragment(), OnItemClickListener {
+class SearchResultFragment : ListFragment(), SearchCardInteraction {
 
     private lateinit var viewModel: SearchResultViewModel
     private  var keyword: String? = null
@@ -56,15 +56,6 @@ class SearchResultFragment : ListFragment(), OnItemClickListener {
         }
     }
 
-    override fun onItemClicked(book: SearchBook) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onItemImageLongClicked(book: SearchBook): Boolean {
-        Toast.makeText(context, book.title, Toast.LENGTH_LONG).show()
-        return true
-    }
-
     override fun onAddButtonClicked(book: SearchBook) {
         context?.let {
             MaterialDialog(it).show {
@@ -75,10 +66,10 @@ class SearchResultFragment : ListFragment(), OnItemClickListener {
                     1 -> viewModel.addToWish(book)
                     2 -> viewModel.addToArchive(book)
                 }
-                Toast.makeText(context, toastText, Toast.LENGTH_LONG).show()
+                Snackbar.make(view, book.title, Snackbar.LENGTH_LONG).show()
             }
-            positiveButton(R.string.add)
-        }
+                positiveButton(R.string.add)
+            }
         }
     }
 
