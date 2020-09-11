@@ -4,29 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import github.tinkzhang.readkeeper.R
 import github.tinkzhang.readkeeper.common.InjectorUtils
+import github.tinkzhang.readkeeper.common.ui.ListFragment
 import github.tinkzhang.readkeeper.search.model.SearchBook
 
-class SearchResultFragment : Fragment(), OnItemClickListener {
-
-    companion object {
-        fun newInstance() = SearchResultFragment()
-    }
+class SearchResultFragment : ListFragment(), OnItemClickListener {
 
     private lateinit var viewModel: SearchResultViewModel
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-
     private  var keyword: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -35,30 +26,34 @@ class SearchResultFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, InjectorUtils.provideSearchViewModelFactory(requireContext()))
                 .get(SearchResultViewModel::class.java)
         keyword = arguments?.getString("keyword")
         keyword?.let { viewModel.searchBook(it) }
 
-        val adapter: SearchBookListAdapter = SearchBookListAdapter(this )
-        viewModel.books.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
-        })
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                true -> progressBar.visibility = View.VISIBLE
-                false -> progressBar.visibility = View.GONE
-            }
-        })
+        super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun configRecyclerView() {
+        val adapter = SearchBookListAdapter(this )
+        with(viewModel) {
+            with(books) { observe(viewLifecycleOwner, Observer(adapter::submitList)) }
+        }
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        progressBar = view.findViewById(R.id.progressBar)
+    override fun configLoadingBar() {
+        with(viewModel) {
+            with(isLoading) {
+                observe(viewLifecycleOwner, Observer {
+                    when (it) {
+                        true -> progressBar.visibility = View.VISIBLE
+                        false -> progressBar.visibility = View.GONE
+                    }
+                })
+            }
+        }
     }
 
     override fun onItemClicked(book: SearchBook) {
