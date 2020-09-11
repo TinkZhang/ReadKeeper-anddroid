@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
 import github.tinkzhang.readkeeper.common.ui.ListFragment
 
-class ArchivedFragment : ListFragment(), OnItemClickListener {
+class ArchivedFragment : ListFragment(), ArchiveCardInteraction {
 
     private lateinit var viewModel: ArchivedViewModel
 
@@ -44,10 +44,6 @@ class ArchivedFragment : ListFragment(), OnItemClickListener {
         })
     }
 
-    override fun onItemClicked(view: View, book: ArchiveBook) {
-        Snackbar.make(view, "Hello", Snackbar.LENGTH_LONG).show()
-    }
-
     override fun onItemLongClicked(view: View, book: ArchiveBook) {
         activity?.startActionMode(object : ActionMode.Callback {
             override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
@@ -78,14 +74,6 @@ class ArchivedFragment : ListFragment(), OnItemClickListener {
             }
 
         })
-    }
-
-    override fun onItemImageLongClicked(book: ArchiveBook): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onAddButtonClicked(book: ArchiveBook) {
-        TODO("Not yet implemented")
     }
 
 }
