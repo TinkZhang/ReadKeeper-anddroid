@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
 
-class ArchivedFragment : Fragment(), github.tinkzhang.readkeeper.archive.OnItemClickListener {
+class ArchivedFragment : Fragment(), OnItemClickListener {
 
     companion object {
         fun newInstance() = ArchivedFragment()
