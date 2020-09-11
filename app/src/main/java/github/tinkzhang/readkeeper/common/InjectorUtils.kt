@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import github.tinkzhang.readkeeper.archive.ArchiveRepository
+import github.tinkzhang.readkeeper.reading.ReadingRepository
 import github.tinkzhang.readkeeper.search.SearchResultViewModel
 import github.tinkzhang.readkeeper.wish.WishRepository
 
@@ -17,6 +18,9 @@ object InjectorUtils {
         return WishRepository.getInstance(AppDatabase.getDatabase(context).wishBookDao())
     }
 
+    fun getReadingRepository(context: Context) : ReadingRepository {
+        return ReadingRepository.getInstance(AppDatabase.getDatabase(context).readingBookDao())
+    }
 
     fun provideSearchViewModelFactory(context: Context) : SearchViewModelFactory {
         return SearchViewModelFactory(context)

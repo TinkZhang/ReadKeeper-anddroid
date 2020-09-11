@@ -9,6 +9,8 @@ import github.tinkzhang.readkeeper.archive.ArchiveBook
 import github.tinkzhang.readkeeper.archive.ArchiveRepository
 import github.tinkzhang.readkeeper.common.InjectorUtils
 import github.tinkzhang.readkeeper.network.GoodreadsService
+import github.tinkzhang.readkeeper.reading.ReadingBook
+import github.tinkzhang.readkeeper.reading.ReadingRepository
 import github.tinkzhang.readkeeper.search.model.SearchBook
 import github.tinkzhang.readkeeper.search.model.Work
 import github.tinkzhang.readkeeper.wish.WishBook
@@ -23,6 +25,7 @@ class SearchResultViewModel(context: Context) : ViewModel() {
 
     private val archiveRepository : ArchiveRepository = InjectorUtils.getArchiveRepository(context)
     private val wishRepository : WishRepository = InjectorUtils.getWishRepository(context)
+    private val readingRepository : ReadingRepository = InjectorUtils.getReadingRepository(context)
 
     fun searchBook(keyword: String){
         viewModelScope.launch {
@@ -47,7 +50,9 @@ class SearchResultViewModel(context: Context) : ViewModel() {
     }
 
     fun addToReading(book: SearchBook) {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            readingRepository.insert(ReadingBook(book))
+        }
     }
 
     fun addToWish(book: SearchBook) {

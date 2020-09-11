@@ -4,12 +4,19 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import github.tinkzhang.readkeeper.archive.ArchiveBook
+import github.tinkzhang.readkeeper.reading.ReadingBook
+import github.tinkzhang.readkeeper.reading.ReadingBookDao
 import github.tinkzhang.readkeeper.wish.WishBook
 
-@Database(entities = arrayOf(ArchiveBook::class, WishBook::class), version = 1)
+@Database(entities = arrayOf(
+            ArchiveBook::class,
+            WishBook::class,
+            ReadingBook::class),
+        version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun archiveBookDao(): ArchiveBookDao
     abstract fun wishBookDao(): WishBookDao
+    abstract fun readingBookDao(): ReadingBookDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
