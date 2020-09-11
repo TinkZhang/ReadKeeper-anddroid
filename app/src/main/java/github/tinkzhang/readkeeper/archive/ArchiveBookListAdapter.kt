@@ -10,7 +10,7 @@ import github.tinkzhang.readkeeper.common.ui.BookCardInteraction
 import github.tinkzhang.readkeeper.common.ui.BookDiffCallback
 import github.tinkzhang.readkeeper.common.ui.BookViewHolder
 
-class ArchiveBookListAdapter(val onClickListener: ArchiveCardInteraction)
+class ArchiveBookListAdapter(private val onClickListener: ArchiveCardInteraction)
     : ListAdapter<ArchiveBook, ArchiveItemViewHolder>(ArchiveBookDiffCallback())  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)

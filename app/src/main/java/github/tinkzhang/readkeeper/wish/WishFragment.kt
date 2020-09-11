@@ -1,16 +1,16 @@
 package github.tinkzhang.readkeeper.wish
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.Html
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
 import github.tinkzhang.readkeeper.common.ui.ListFragment
 
-class WishFragment : ListFragment(), OnItemClickListener{
+class WishFragment : ListFragment(), WishCardInteraction {
 
     private lateinit var viewModel: WishViewModel
 
@@ -43,20 +43,36 @@ class WishFragment : ListFragment(), OnItemClickListener{
         })
     }
 
-    override fun onItemClicked(view: View, book: WishBook) {
-        TODO("Not yet implemented")
-    }
-
     override fun onItemLongClicked(view: View, book: WishBook) {
-        TODO("Not yet implemented")
-    }
+        activity?.startActionMode(object : ActionMode.Callback {
+            override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                this@WishFragment.activity?.menuInflater?.inflate(R.menu.list_delete_menu, menu)
 
-    override fun onItemImageLongClicked(book: WishBook): Boolean {
-        TODO("Not yet implemented")
-    }
+                return true
+            }
 
-    override fun onAddButtonClicked(book: WishBook) {
-        TODO("Not yet implemented")
+            override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                mode?.title = book.title
+                return false
+            }
+
+            override fun onActionItemClicked(mode: ActionMode?, menu: MenuItem?): Boolean {
+                when(menu?.itemId) {
+                    R.id.delete_menu -> viewModel.delete(book)
+                }
+                mode?.finish()
+                Snackbar.make(
+                        view,
+                        Html.fromHtml(getString(R.string.snackbar_delete_message, book.title), Html.FROM_HTML_MODE_COMPACT),
+                        Snackbar.LENGTH_LONG).show()
+                return true
+            }
+
+            override fun onDestroyActionMode(mode: ActionMode?) {
+                this@WishFragment.recyclerView.adapter?.notifyDataSetChanged()
+            }
+
+        })
     }
 
 }
