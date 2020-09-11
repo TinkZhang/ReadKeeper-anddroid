@@ -36,15 +36,15 @@ abstract class AppDatabase : RoomDatabase() {
 }
 
 @Dao
-interface ArchiveBookDao {
+interface ArchiveBookDao : BookDao<ArchiveBook> {
     @Query("SELECT * FROM ArchiveBook ORDER BY addedTime ASC")
-    fun getAll(): LiveData<List<ArchiveBook>>
+    override fun getAll(): LiveData<List<ArchiveBook>>
 
     @Insert
-    suspend fun insertAll(vararg books: ArchiveBook)
+    override suspend fun insertAll(vararg books: ArchiveBook)
 
     @Delete
-    suspend fun delete(book: ArchiveBook)
+    override suspend fun delete(book: ArchiveBook)
 }
 
 @Dao
