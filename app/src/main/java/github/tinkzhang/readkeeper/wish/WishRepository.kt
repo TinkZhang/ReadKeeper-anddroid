@@ -1,17 +1,15 @@
 package github.tinkzhang.readkeeper.wish
 
-import androidx.lifecycle.LiveData
+import github.tinkzhang.readkeeper.common.BookRepository
 import github.tinkzhang.readkeeper.common.WishBookDao
 
-class WishRepository(private val wishBookDao: WishBookDao) {
+class WishRepository(private val wishBookDao: WishBookDao): BookRepository<WishBook>(wishBookDao) {
 
-    val allBooks: LiveData<List<WishBook>> = wishBookDao.getAll()
-
-    suspend fun insert(book: WishBook) {
+    override suspend fun insert(book: WishBook) {
         wishBookDao.insertAll(book)
     }
 
-    suspend fun delete(book: WishBook) {
+    override suspend fun delete(book: WishBook) {
         wishBookDao.delete(book)
     }
 

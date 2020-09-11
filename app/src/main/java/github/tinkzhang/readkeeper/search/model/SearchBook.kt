@@ -10,5 +10,5 @@ data class SearchBook(
     override var addedTime: Long = 0,
     override var rating: Double = 0.0,
     var ratingsCount: Int = 0,
-    var originalPublicationYear: Int = 1900
+    override var originalPublicationYear: Int = 1900
 ) : BasicBook()

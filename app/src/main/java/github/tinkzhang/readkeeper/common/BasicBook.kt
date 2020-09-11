@@ -7,4 +7,5 @@ abstract class BasicBook {
     abstract var pages: Int
     abstract var addedTime: Long
     abstract var rating: Double
+    abstract var originalPublicationYear: Int
 }

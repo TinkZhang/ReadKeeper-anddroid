@@ -1,74 +1,38 @@
 package github.tinkzhang.readkeeper.archive
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import github.tinkzhang.readkeeper.R
+import github.tinkzhang.readkeeper.common.BasicBook
+import github.tinkzhang.readkeeper.common.ui.BookCardInteraction
+import github.tinkzhang.readkeeper.common.ui.BookDiffCallback
+import github.tinkzhang.readkeeper.common.ui.BookViewHolder
 
-class ArchiveBookListAdapter(val onClickListener: github.tinkzhang.readkeeper.archive.OnItemClickListener) : ListAdapter<ArchiveBook, ArchiveItemViewHolder>(github.tinkzhang.readkeeper.archive.BookDiffCallback())  {
+class ArchiveBookListAdapter(private val onClickListener: ArchiveCardInteraction)
+    : ListAdapter<ArchiveBook, ArchiveItemViewHolder>(ArchiveBookDiffCallback())  {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArchiveItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ArchiveItemViewHolder(inflater.inflate(R.layout.item_archive_book, parent, false), onClickListener)
-
+        return ArchiveItemViewHolder(
+                inflater.inflate(R.layout.item_archive_book, parent, false),
+                onClickListener)
     }
 
     override fun onBindViewHolder(holder: ArchiveItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
 }
 
-class ArchiveItemViewHolder(itemView: View, val onClickListener: github.tinkzhang.readkeeper.archive.OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
-    @SuppressLint("ShowToast")
+class ArchiveItemViewHolder(itemView: View, private val onClickListener: ArchiveCardInteraction)
+    : BookViewHolder(itemView) {
     fun bind(book: ArchiveBook) {
-        itemView.findViewById<TextView>(R.id.title_textview).text = book.title
-
-        itemView.setOnLongClickListener {
-            itemView.isActivated = true
-            onClickListener.onItemLongClicked(itemView, book)
-            true
-        }
-
-        itemView.isActivated = false
-
-        Glide.with(itemView).load(book.imageUrl).into(
-                itemView.findViewById(R.id.book_cover_imageview)
-        )
-
-        itemView.findViewById<TextView>(R.id.author_textview).text = book.author.trim()
-
-        if (book.originalPublicationYear > 0) {
-            itemView.findViewById<TextView>(R.id.publish_time_textview).text =
-                    book.originalPublicationYear.toString()
-        }
-
-        if (book.rating > 0) {
-            itemView.findViewById<TextView>(R.id.rating_textview).text =
-                    itemView.context.getString(R.string.rate_text, book.rating)
-        }
+        super.bind(book, onClickListener as BookCardInteraction<BasicBook>)
     }
 }
 
-class BookDiffCallback : DiffUtil.ItemCallback<ArchiveBook>() {
-
-    override fun areItemsTheSame(oldItem: ArchiveBook, newItem: ArchiveBook): Boolean {
-        return oldItem.title == newItem.title
-    }
-
+class ArchiveBookDiffCallback : BookDiffCallback<ArchiveBook>() {
     override fun areContentsTheSame(oldItem: ArchiveBook, newItem: ArchiveBook): Boolean {
         return oldItem == newItem
     }
-}
-
-interface OnItemClickListener {
-    fun onItemClicked(view: View, book: ArchiveBook)
-    fun onItemLongClicked(view: View, book: ArchiveBook)
-    fun onItemImageLongClicked(book: ArchiveBook) : Boolean
-    fun onAddButtonClicked(book: ArchiveBook)
 }
