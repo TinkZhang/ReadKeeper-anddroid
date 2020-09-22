@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_apple_book"
+        app:srcCompat="@drawable/ic_book_default_cover"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView

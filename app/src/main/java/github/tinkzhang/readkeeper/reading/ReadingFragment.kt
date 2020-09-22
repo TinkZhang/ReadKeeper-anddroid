@@ -77,6 +77,7 @@ class ReadingFragment : ListFragment(), ReadingCardInteraction {
 
     override fun onItemClicked(view: View, book: ReadingBook) {
         super.onItemClicked(view, book)
+        viewModel.selectedBookIndex = viewModel.books.value?.indexOf(book)
         findNavController().navigate(R.id.action_navigation_reading_to_readingDetailFragment)
     }
 }
