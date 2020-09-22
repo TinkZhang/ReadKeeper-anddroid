@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.text.Html
 import android.view.*
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import github.tinkzhang.readkeeper.R
@@ -12,19 +13,15 @@ import github.tinkzhang.readkeeper.common.ui.ListFragment
 
 class ReadingFragment : ListFragment(), ReadingCardInteraction {
 
-    private lateinit var viewModel: ReadingViewModel
-
+    val viewModel: ReadingViewModel by navGraphViewModels(R.id.mobile_navigation) {
+        ReadingViewModelFactory(this.requireActivity().application)
+    }
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_reading, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this).get(ReadingViewModel::class.java)
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun configRecyclerView() {
@@ -76,5 +73,10 @@ class ReadingFragment : ListFragment(), ReadingCardInteraction {
             }
 
         })
+    }
+
+    override fun onItemClicked(view: View, book: ReadingBook) {
+        super.onItemClicked(view, book)
+        findNavController().navigate(R.id.action_navigation_reading_to_readingDetailFragment)
     }
 }
