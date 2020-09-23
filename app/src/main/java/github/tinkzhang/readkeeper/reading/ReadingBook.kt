@@ -16,7 +16,8 @@ data class ReadingBook(
         override var addedTime: Long = 0,
         override var rating: Double = 0.0,
         var ratingsCount: Int = 0,
-        override var originalPublicationYear: Int = 1900
+        override var originalPublicationYear: Int = 1900,
+        var progress: Int = 0
 ) : BasicBook() {
     constructor(book: SearchBook) : this() {
         this.title = book.title
