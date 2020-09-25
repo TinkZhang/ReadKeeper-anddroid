@@ -13,6 +13,7 @@ import github.tinkzhang.readkeeper.wish.WishBook
             WishBook::class,
             ReadingBook::class),
         version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun archiveBookDao(): ArchiveBookDao
     abstract fun wishBookDao(): WishBookDao

@@ -16,6 +16,11 @@ class ReadingViewModel(application: Application) : AndroidViewModel(application)
     var isLoading = MutableLiveData<Boolean>()
     var selectedBook: ReadingBook? = null
         get() = selectedBookIndex?.let { books.value?.get(it) }
+
+    val selectedBookA: MutableLiveData<ReadingBook> by lazy {
+        MutableLiveData<ReadingBook>()
+    }
+
     var selectedBookIndex: Int? = null
 
     init {
