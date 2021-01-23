@@ -16,12 +16,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_reading"
-        android:name="github.tinkzhang.readkeeper.reading.ReadingFragment"
-        android:label="@string/title_reading"
-        tools:layout="@layout/fragment_reading" />
-
-    <fragment
         android:id="@+id/navigation_wish"
         android:name="github.tinkzhang.readkeeper.wish.WishFragment"
         android:label="@string/title_wish"
@@ -52,4 +46,23 @@
             android:name="keyword"
             app:argType="string" />
     </fragment>
+    <navigation
+        android:id="@+id/navigation_reading"
+        android:label="@string/title_reading"
+        app:startDestination="@id/navigation_reading_list">
+        <fragment
+            android:id="@+id/navigation_reading_list"
+            android:name="github.tinkzhang.readkeeper.reading.ReadingFragment"
+            android:label="@string/title_reading"
+            tools:layout="@layout/fragment_reading">
+            <action
+                android:id="@+id/action_navigation_reading_to_readingDetailFragment"
+                app:destination="@id/navigation_reading_detail" />
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_reading_detail"
+            android:name="github.tinkzhang.readkeeper.reading.ReadingDetailFragment"
+            android:label="fragment_reading_detail"
+            tools:layout="@layout/fragment_reading_detail" />
+    </navigation>
 </navigation>

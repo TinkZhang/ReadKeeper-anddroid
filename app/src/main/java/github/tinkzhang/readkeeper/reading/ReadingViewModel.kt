@@ -14,6 +14,15 @@ class ReadingViewModel(application: Application) : AndroidViewModel(application)
     private val repository: ReadingRepository
     val books: LiveData<List<ReadingBook>>
     var isLoading = MutableLiveData<Boolean>()
+    lateinit var selectedBook: MutableLiveData<ReadingBook>
+
+    var selectedBookIndex: Int? = null
+        set(value) {
+            if (value != null) {
+                selectedBook = MutableLiveData<ReadingBook>(books.value?.get(value))
+            }
+            field = value
+        }
 
     init {
         val readingBookDao = AppDatabase.getDatabase(application).readingBookDao()
