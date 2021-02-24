@@ -3,7 +3,6 @@ package github.tinkzhang.readkeeper.reading
 import android.os.Bundle
 import android.text.Html
 import android.view.*
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +25,7 @@ class ReadingFragment : ListFragment(), ReadingCardInteraction {
 
     override fun configRecyclerView() {
         val adapter = ReadingBookListAdapter(this)
-        viewModel.books.observe(viewLifecycleOwner, Observer {
+        viewModel.books.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
 
@@ -35,7 +34,7 @@ class ReadingFragment : ListFragment(), ReadingCardInteraction {
     }
 
     override fun configLoadingBar() {
-        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        viewModel.isLoading.observe(viewLifecycleOwner, {
             when (it) {
                 true -> progressBar.visibility = View.VISIBLE
                 false -> progressBar.visibility = View.GONE
