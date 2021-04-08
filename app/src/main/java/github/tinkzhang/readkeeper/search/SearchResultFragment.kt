@@ -36,11 +36,13 @@ class SearchResultFragment : ListFragment(), SearchCardInteraction {
 
     override fun configRecyclerView() {
         val adapter = SearchBookListAdapter(this )
-        with(viewModel) {
-            with(books) { observe(viewLifecycleOwner, Observer(adapter::submitList)) }
-        }
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+        viewModel.books.observe(this, {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
     }
 
     override fun configLoadingBar() {
