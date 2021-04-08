@@ -8,11 +8,12 @@ import androidx.lifecycle.viewModelScope
 import github.tinkzhang.readkeeper.archive.ArchiveBook
 import github.tinkzhang.readkeeper.archive.ArchiveRepository
 import github.tinkzhang.readkeeper.common.InjectorUtils
-import github.tinkzhang.readkeeper.network.GoodreadsService
+import github.tinkzhang.readkeeper.network.GoogleBookService
 import github.tinkzhang.readkeeper.reading.ReadingBook
 import github.tinkzhang.readkeeper.reading.ReadingRepository
 import github.tinkzhang.readkeeper.search.model.SearchBook
 import github.tinkzhang.readkeeper.search.model.Work
+import github.tinkzhang.readkeeper.search.model.googlebook.Item
 import github.tinkzhang.readkeeper.wish.WishBook
 import github.tinkzhang.readkeeper.wish.WishRepository
 import kotlinx.coroutines.Dispatchers
@@ -32,12 +33,12 @@ class SearchResultViewModel(context: Context) : ViewModel() {
             try {
                 isLoading.value = true
                 val data = withContext(Dispatchers.IO){
-                    GoodreadsService.instance.searchBook(keyword)
+//                    GoodreadsService.instance.searchBook(keyword)
+                    GoogleBookService.instance.searchBook(keyword)
                 }
                 if (data.code() == 200) {
-                    books.value = data.body()?.search?.results?.map {
-                        it.convertToSearchBook()
-                    }
+                    Log.d("Tink", data.body()?.totalItems.toString())
+                    books.value = data.body()?.items?.map { it.convertToSearchBook() }
                     isLoading.value = false
                 }
                 Log.d("Tink", data.toString())
@@ -77,5 +78,16 @@ private fun Work.convertToSearchBook(): SearchBook {
         rating = this.averageRating.toDouble(),
         ratingsCount = this.ratingsCount,
         originalPublicationYear = this.originalPublicationYear
+    )
+}
+
+private fun Item.convertToSearchBook(): SearchBook {
+    return SearchBook(
+        title = this.volumeInfo.title,
+        imageUrl = this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https") ?: "",
+        author = this.volumeInfo.authors?.joinToString() ?: "",
+        rating = this.volumeInfo.averageRating.toDouble(),
+        ratingsCount = this.volumeInfo.ratingsCount,
+        originalPublicationYear = this.volumeInfo.publishedDate.split('-').first().toInt()
     )
 }
