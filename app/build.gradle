@@ -53,10 +53,19 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'
-    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
-    implementation 'com.google.firebase:firebase-config-ktx:20.0.4'
-    implementation 'com.google.firebase:firebase-firestore-ktx:22.1.2'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:26.8.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+
+    // Google Play Service
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+
     implementation 'com.lapism:search:2.2.0@aar'
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation 'com.tickaroo.tikxml:annotation:0.8.13'

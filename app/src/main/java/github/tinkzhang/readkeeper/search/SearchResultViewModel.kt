@@ -24,16 +24,15 @@ class SearchResultViewModel(context: Context) : ViewModel() {
     var books = MutableLiveData<List<SearchBook>>()
     var isLoading = MutableLiveData<Boolean>()
 
-    private val archiveRepository : ArchiveRepository = InjectorUtils.getArchiveRepository(context)
-    private val wishRepository : WishRepository = InjectorUtils.getWishRepository(context)
-    private val readingRepository : ReadingRepository = InjectorUtils.getReadingRepository(context)
+    private val archiveRepository: ArchiveRepository = InjectorUtils.getArchiveRepository(context)
+    private val wishRepository: WishRepository = InjectorUtils.getWishRepository(context)
+    private val readingRepository: ReadingRepository = InjectorUtils.getReadingRepository(context)
 
-    fun searchBook(keyword: String){
+    fun searchBook(keyword: String) {
         viewModelScope.launch {
             try {
                 isLoading.value = true
-                val data = withContext(Dispatchers.IO){
-//                    GoodreadsService.instance.searchBook(keyword)
+                val data = withContext(Dispatchers.IO) {
                     GoogleBookService.instance.searchBook(keyword)
                 }
                 if (data.code() == 200) {
@@ -42,8 +41,7 @@ class SearchResultViewModel(context: Context) : ViewModel() {
                     isLoading.value = false
                 }
                 Log.d("Tink", data.toString())
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.d("Tink", e.toString())
                 isLoading.value = false
             }
@@ -84,10 +82,10 @@ private fun Work.convertToSearchBook(): SearchBook {
 private fun Item.convertToSearchBook(): SearchBook {
     return SearchBook(
         title = this.volumeInfo.title,
-        imageUrl = this.volumeInfo.imageLinks?.thumbnail?.replace("http", "https") ?: "",
+        imageUrl = this.volumeInfo.imageLinks?.thumbnail?.replace("http:", "https:") ?: "",
         author = this.volumeInfo.authors?.joinToString() ?: "",
         rating = this.volumeInfo.averageRating.toDouble(),
         ratingsCount = this.volumeInfo.ratingsCount,
-        originalPublicationYear = this.volumeInfo.publishedDate.split('-').first().toInt()
+        originalPublicationYear = this.volumeInfo.publishedDate?.split('-')?.first()?.toInt() ?: 0
     )
 }

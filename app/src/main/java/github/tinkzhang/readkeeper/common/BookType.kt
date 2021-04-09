@@ -4,7 +4,7 @@ import github.tinkzhang.readkeeper.R
 
 enum class BookType {
     PAPER {
-        override fun nameString() = "Kindle"
+        override fun nameString() = "Paper"
         override fun logoResId() = R.drawable.ic_paper_book
     },
     KINDLE {

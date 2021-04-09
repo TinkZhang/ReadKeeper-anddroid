@@ -17,7 +17,7 @@ data class VolumeInfo(
     val panelizationSummary: PanelizationSummary,
     val previewLink: String,
     val printType: String,
-    val publishedDate: String,
+    val publishedDate: String?,
     val publisher: String,
     val ratingsCount: Int,
     val readingModes: ReadingModes,
